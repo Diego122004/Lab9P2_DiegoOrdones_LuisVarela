@@ -1,13 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package a;
 
-/**
- *
- * @author 50432
- */
-public class Products {
+
+public class Products extends Registro{
+
+    public Products() {
+    }
+
+    public Products(String productid, String category, String subcategory, String productname) {
+        super(productid, category, subcategory, productname);
+    }
+
+    @Override
+    public String toString() {
+        return "Products{" + '}';
+    }
+    
     
 }

@@ -1,13 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package a;
 
-/**
- *
- * @author 50432
- */
-public class Customers {
+
+public class Customers extends Registro{
+
+    public Customers() {
+    }
+
+    
+    public Customers(String customerid, String customername, String segment, String country, String city, String state, String postalcode, String region) {
+        super(customerid, customername, segment, country, city, state, postalcode, region);
+    }
+
+    @Override
+    public String toString() {
+        return "Customers{" + '}';
+    }
+    
     
 }
