@@ -52,6 +52,42 @@ public class Registro {
         this.profit = profit;
     }
 
+    public Registro(String Orderid, String Orderdate, String shipdate, String shipmode, String customerid) {
+        this.Orderid = Orderid;
+        this.Orderdate = Orderdate;
+        this.shipdate = shipdate;
+        this.shipmode = shipmode;
+        this.customerid = customerid;
+    }
+
+    public Registro(String Orderid, String productid, String sales, String quantity, String discount, String profit) {
+        this.Orderid = Orderid;
+        this.productid = productid;
+        this.sales = sales;
+        this.quantity = quantity;
+        this.discount = discount;
+        this.profit = profit;
+    }
+
+    public Registro(String customerid, String customername, String segment, String country, String city, String state, String postalcode, String region) {
+        this.customerid = customerid;
+        this.customername = customername;
+        this.segment = segment;
+        this.country = country;
+        this.city = city;
+        this.state = state;
+        this.postalcode = postalcode;
+        this.region = region;
+    }
+
+    public Registro(String productid, String category, String subcategory, String productname) {
+        this.productid = productid;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.productname = productname;
+    }
+    
+
     public int getId() {
         return id;
     }
