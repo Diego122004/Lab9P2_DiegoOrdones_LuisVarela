@@ -4,7 +4,9 @@
  */
 package a;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -84,7 +86,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jProgressBar1 = new javax.swing.JProgressBar();
@@ -488,7 +490,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Listar Registros", jPanel4);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -504,11 +506,21 @@ public class NewJFrame extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTable);
 
         jButton2.setText("Eliminar Registro");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Update Tabla");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -659,11 +671,11 @@ public class NewJFrame extends javax.swing.JFrame {
 
             db.query.execute("INSERT INTO TenRecord"
                     + " (OrderID,OrderDate,ShipDate,ShipMode,CustomerID,CustomerName,Segment,Country,City,State,PostalCode,Region,ProductID,Category,SubCategory,ProductName,Sales,Quantity,Discount,Profit)"
-                    + " VALUES ( '" + jtext_OrderID.getText() + "' , '" + jText_OrdenDate.getText() + " ' , ' " + jText_ShipDate.getText()
+                    + " VALUES ('" + jtext_OrderID.getText() + "' , '" + jText_OrdenDate.getText() + " ' , ' " + jText_ShipDate.getText()
                     + "', '" + jText_ShipMode.getText() + "', '" + jText_CustomerID.getText() + "', '" + jText_CustomerName.getText() + "', '" + jText_Segment.getText()
                     + "', '" + jText_Country.getText() + "', '" + jText_City.getText() + "', '" + jText_State.getText() + "', '" + jText_PostalCode.getText()
                     + "', '" + jText_Region.getText() + "', '" + jText_ProductID.getText() + "', '" + jTextField20.getText() + "', '" + jText_SubCategory.getText()
-                    + "', '" + jText_ProductoName.getText() + "', '" + jText_Sales.getText() + "', '" + jText_Quantity.getText() + "', '" + jText_Discount.getText() 
+                    + "', '" + jText_ProductoName.getText() + "', '" + jText_Sales.getText() + "', '" + jText_Quantity.getText() + "', '" + jText_Discount.getText()
                     + "', '" + jText_Profit.getText() + "' )");
             db.commit();
         } catch (SQLException ex) {
@@ -675,6 +687,46 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jText_ShipModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jText_ShipModeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jText_ShipModeActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Dba db = new Dba("./Lab9.accdb");
+        DefaultTableModel m = (DefaultTableModel) jTable.getModel();
+        int row = m.getRowCount();
+        if (row > 0) {
+            for (int i = row - 1; i >= 0; i--) {
+                m.removeRow(i);
+            }
+        }
+        db.conectar();
+        try {
+            db.query.execute("select * from TenRecord");
+            ResultSet rs = db.query.getResultSet();
+            while (rs.next()) {
+                Object[] temp = {rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(6), rs.getString(9), rs.getString(10), rs.getString(14), rs.getString(18)};
+                m.addRow(temp);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (jTable.getSelectedRow() >= 0) {
+            Dba db = new Dba("./Lab9.accdb");
+            db.conectar();
+            try {
+                DefaultTableModel m = (DefaultTableModel) jTable.getModel();
+                int temp=jTable.getSelectedRow()+1;
+                Object temp[]=m.
+                db.query.execute("delete from TenRecord where Id="+temp);
+                db.commit();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            db.desconectar();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -748,7 +800,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField20;
