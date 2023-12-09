@@ -6,6 +6,7 @@ package a;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -83,7 +84,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textarea = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
@@ -432,26 +433,51 @@ public class NewJFrame extends javax.swing.JFrame {
         jButton4.setBackground(new java.awt.Color(0, 102, 0));
         jButton4.setForeground(new java.awt.Color(0, 0, 0));
         jButton4.setText("Orders");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(255, 153, 0));
         jButton5.setForeground(new java.awt.Color(0, 0, 0));
         jButton5.setText("Details");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setBackground(new java.awt.Color(255, 102, 102));
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
         jButton6.setText("Customers");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setBackground(new java.awt.Color(102, 102, 255));
         jButton7.setForeground(new java.awt.Color(0, 0, 0));
         jButton7.setText("Products");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setForeground(new java.awt.Color(0, 0, 0));
         jButton8.setText("Clear");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        textarea.setColumns(20);
+        textarea.setRows(5);
+        jScrollPane2.setViewportView(textarea);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -668,7 +694,6 @@ public class NewJFrame extends javax.swing.JFrame {
         Dba db = new Dba("./Lab9.accdb");
         db.conectar();
         try {
-
             db.query.execute("INSERT INTO TenRecord"
                     + " (OrderID,OrderDate,ShipDate,ShipMode,CustomerID,CustomerName,Segment,Country,City,State,PostalCode,Region,ProductID,Category,SubCategory,ProductName,Sales,Quantity,Discount,Profit)"
                     + " VALUES ('" + jtext_OrderID.getText() + "' , '" + jText_OrdenDate.getText() + " ' , ' " + jText_ShipDate.getText()
@@ -677,11 +702,16 @@ public class NewJFrame extends javax.swing.JFrame {
                     + "', '" + jText_Region.getText() + "', '" + jText_ProductID.getText() + "', '" + jTextField20.getText() + "', '" + jText_SubCategory.getText()
                     + "', '" + jText_ProductoName.getText() + "', '" + jText_Sales.getText() + "', '" + jText_Quantity.getText() + "', '" + jText_Discount.getText()
                     + "', '" + jText_Profit.getText() + "' )");
+            hiloprogres h = new hiloprogres(jProgressBar1,4,jtext_OrderID, jText_OrdenDate, jText_ShipDate, jText_ShipMode, jText_CustomerID,
+                     jText_CustomerName, jText_Segment, jText_Country, jText_State, jText_PostalCode, jText_Region, jText_ProductID,
+                     jTextField20, jText_SubCategory, jText_ProductoName, jText_Sales, jText_Quantity, jText_Discount, jText_Profit, jText_City);
             db.commit();
+            h.start();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         db.desconectar();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jText_ShipModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jText_ShipModeActionPerformed
@@ -713,20 +743,103 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (jTable.getSelectedRow() >= 0) {
-            Dba db = new Dba("./Lab9.accdb");
-            db.conectar();
-            try {
-                DefaultTableModel m = (DefaultTableModel) jTable.getModel();
-                int temp=jTable.getSelectedRow()+1;
-                Object temp[]=m.
-                db.query.execute("delete from TenRecord where Id="+temp);
-                db.commit();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            db.desconectar();
+            hiloprogres h = new hiloprogres(5,jTable,jProgressBar1);
+            h.start();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Dba db = new Dba("./Lab9.accdb");
+        String acum = "";
+        db.conectar();
+        try {
+            db.query.execute("select Id,OrderID,OrderDate,ShipDate,ShipMode,CustomerID from TenRecord");
+            ResultSet rs = db.query.getResultSet();
+
+            while (rs.next()) {
+                acum += ("OrderID:" + rs.getString(2) + "\nOrderDate:" + rs.getString(3)
+                        + "\nShipDate:" + rs.getString(4) + "\nShipMode:" + rs.getString(5)
+                        + "\nCustomerID:" + rs.getString(6) + "\n\n");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+        hiloprogres h = new hiloprogres(0, jProgressBar1, textarea, acum);
+        h.start();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Dba db = new Dba("./Lab9.accdb");
+        String acum = "";
+        db.conectar();
+        try {
+            db.query.execute("select Id,OrderID,OrderDate,ShipDate,ShipMode,CustomerID,CustomerName,Segment"
+                    + ",Country,City,State,PostalCode,Region,ProductID,Category,SubCategory,ProductName,"
+                    + "Sales,Quantity,Discount,Profit from TenRecord");
+            ResultSet rs = db.query.getResultSet();
+            while (rs.next()) {
+                acum += "OrderID:" + rs.getString(2) + "\nProductID:" + rs.getString(14)
+                        + "\nSales:" + rs.getString(18) + "\nQuantity:" + rs.getString(19)
+                        + "\nDiscount:" + rs.getString(20) + "\nProfit:" + rs.getString(21) + "\n\n";
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+        hiloprogres h = new hiloprogres(1, jProgressBar1, textarea, acum);
+        h.start();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        Dba db = new Dba("./Lab9.accdb");
+        db.conectar();
+        String acum = "";
+        try {
+            db.query.execute("select OrderID,OrderDate,ShipDate,ShipMode,CustomerID,CustomerName,Segment"
+                    + ",Country,City,State,PostalCode,Region,ProductID,Category,SubCategory,ProductName,"
+                    + "Sales,Quantity,Discount,Profit from TenRecord");
+            ResultSet rs = db.query.getResultSet();
+            while (rs.next()) {
+                acum += "CustomerID:" + rs.getString(6) + "\nCustomerName:" + rs.getString(7)
+                        + "\nSegment:" + rs.getString(8) + "\nCountry:" + rs.getString(9)
+                        + "\nCity:" + rs.getString(10) + "\nState:" + rs.getString(11)
+                        + "\nPostalCode:" + rs.getString(12) + "\nRegion:" + rs.getString(13) + "\n\n";
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+        hiloprogres h = new hiloprogres(2, jProgressBar1, textarea, acum);
+        h.start();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        Dba db = new Dba("./Lab9.accdb");
+        db.conectar();
+        String acum = "";
+        try {
+            db.query.execute("select OrderID,OrderDate,ShipDate,ShipMode,CustomerID,CustomerName,Segment"
+                    + ",Country,City,State,PostalCode,Region,ProductID,Category,SubCategory,ProductName,"
+                    + "Sales,Quantity,Discount,Profit from TenRecord");
+            ResultSet rs = db.query.getResultSet();
+            while (rs.next()) {
+                acum += "ProductID:" + rs.getString(14) + "\nCategory:" + rs.getString(15)
+                        + "\nSubCategory:" + rs.getString(16) + "\nProductName:" + rs.getString(17) + "\n\n";
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+        hiloprogres h = new hiloprogres(3, jProgressBar1, textarea, acum);
+        h.start();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        textarea.setText("");
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -801,7 +914,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField20;
     private javax.swing.JTextField jText_City;
@@ -823,5 +935,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jText_State;
     private javax.swing.JTextField jText_SubCategory;
     private javax.swing.JTextField jtext_OrderID;
+    private javax.swing.JTextArea textarea;
     // End of variables declaration//GEN-END:variables
 }
