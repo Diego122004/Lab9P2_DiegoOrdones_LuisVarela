@@ -659,11 +659,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
             db.query.execute("INSERT INTO TenRecord"
                     + " (Order ID,Order Date,Ship Date,Ship Mode,Customer ID,Customer Name,Segment,Country,City,State,Postal Code,Region,Product ID,Category,Sub-Category,Product Name,Sales,Quantity,Discount,Profit)"
-                    + " VALUES ( '" + jtext_OrderID.getText() + "', '" + jText_OrdenDate.getText() + "', '" + jText_ShipDate.getText()
-                    + "', '" + jText_ShipMode.getText() + "', '" + jText_CustomerID.getText() + "', '" + jText_CustomerName + "', '" + jText_Segment.getText()
+                    + " VALUES ( '" + jtext_OrderID.getText() + "' , '" + jText_OrdenDate.getText() + " ' , ' " + jText_ShipDate.getText()
+                    + "', '" + jText_ShipMode.getText() + "', '" + jText_CustomerID.getText() + "', '" + jText_CustomerName.getText() + "', '" + jText_Segment.getText()
                     + "', '" + jText_Country.getText() + "', '" + jText_City.getText() + "', '" + jText_State.getText() + "', '" + jText_PostalCode.getText()
                     + "', '" + jText_Region.getText() + "', '" + jText_ProductID.getText() + "', '" + jTextField20.getText() + "', '" + jText_SubCategory.getText()
-                    + "', '" +jText_ProductoName.getText()+ "', '" +jText_Sales.getText()+ "', '" +jText_Quantity.getText()+ "', '" +jText_Discount.getText()+ "', '" +jText_Profit.getText());
+                    + "', '" + jText_ProductoName.getText() + "', '" + jText_Sales.getText() + "', '" + jText_Quantity.getText() + "', '" + jText_Discount.getText() 
+                    + "', '" + jText_Profit.getText() + "' )");
             db.commit();
         } catch (SQLException ex) {
             ex.printStackTrace();
