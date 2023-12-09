@@ -658,7 +658,7 @@ public class NewJFrame extends javax.swing.JFrame {
         try {
 
             db.query.execute("INSERT INTO TenRecord"
-                    + " (Order ID,Order Date,Ship Date,Ship Mode,Customer ID,Customer Name,Segment,Country,City,State,Postal Code,Region,Product ID,Category,Sub-Category,Product Name,Sales,Quantity,Discount,Profit)"
+                    + " (OrderID,OrderDate,ShipDate,ShipMode,CustomerID,CustomerName,Segment,Country,City,State,PostalCode,Region,ProductID,Category,SubCategory,ProductName,Sales,Quantity,Discount,Profit)"
                     + " VALUES ( '" + jtext_OrderID.getText() + "' , '" + jText_OrdenDate.getText() + " ' , ' " + jText_ShipDate.getText()
                     + "', '" + jText_ShipMode.getText() + "', '" + jText_CustomerID.getText() + "', '" + jText_CustomerName.getText() + "', '" + jText_Segment.getText()
                     + "', '" + jText_Country.getText() + "', '" + jText_City.getText() + "', '" + jText_State.getText() + "', '" + jText_PostalCode.getText()
